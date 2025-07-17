@@ -101,7 +101,7 @@ CREATE TABLE
         trans_status    ENUM ('pending', 'completed', 'failed') DEFAULT 'pending',
         created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
         completed_at    DATETIME,
-        FOREIGN KEY (from_user_id) REFERENCES users (user_id),
-        FOREIGN KEY (to_user_id) REFERENCES users (user_id),
+        FOREIGN KEY (sender_id) REFERENCES users (user_id),
+        FOREIGN KEY (receiver_id) REFERENCES users (user_id),
         FOREIGN KEY (crypto_id) REFERENCES crypto_currencies (crypto_id)
     );
