@@ -1,0 +1,106 @@
+erDiagram
+    users {
+        int user_id PK
+        string username UK
+        string email UK
+        string password_hash
+        datetime created_at
+        datetime updated_at
+        boolean is_active
+    }
+
+    crypto_currencies {
+        int crypto_id PK
+        string symbol UK
+        string crypto_name
+        decimal current_price
+        boolean is_active
+        datetime updated_at
+    }
+
+    fiat_currencies {
+        int fiat_id PK
+        string currency_code UK
+        string currency_name
+        decimal rate_to_usd
+        boolean is_active
+        datetime updated_at
+    }
+
+    wallets {
+        int wallet_id PK
+        int user_id FK
+        int crypto_id FK
+        decimal balance
+        datetime created_at
+        datetime updated_at
+    }
+
+    fiat_wallets {
+        int fiat_wallet_id PK
+        int user_id FK
+        int fiat_id FK
+        decimal balance
+        datetime created_at
+        datetime updated_at
+    }
+
+    orders {
+        int order_id PK
+        int user_id FK
+        int crypto_id FK
+        int fiat_id FK
+        string order_type
+        decimal quantity
+        decimal price
+        decimal total_amount
+        string order_status
+        datetime created_at
+        datetime updated_at
+    }
+
+    trades {
+        int trade_id PK
+        int buyer_id FK
+        int seller_id FK
+        int crypto_id FK
+        int fiat_id FK
+        decimal quantity
+        decimal price
+        decimal total_amount
+        string trade_status
+        datetime created_at
+        datetime completed_at
+    }
+
+    transactions {
+        int trans_id PK
+        int sender_id FK
+        int receiver_id FK
+        int crypto_id FK
+        string trans_type
+        decimal amount
+        string trans_status
+        string external_address
+        datetime created_at
+        datetime completed_at
+    }
+
+    users ||--o{ wallets : "owns"
+    users ||--o{ fiat_wallets : "owns"
+    users ||--o{ orders : "creates"
+    users ||--o{ trades : "buyer"
+    users ||--o{ trades : "seller"
+    users ||--o{ transactions : "from"
+    users ||--o{ transactions : "to"
+
+    crypto_currencies ||--o{ wallets : "stored_in"
+    crypto_currencies ||--o{ orders : "for"
+    crypto_currencies ||--o{ trades : "involves"
+    crypto_currencies ||--o{ transactions : "involves"
+
+    fiat_currencies ||--o{ fiat_wallets : "stored_in"
+    fiat_currencies ||--o{ orders : "priced_in"
+    fiat_currencies ||--o{ trades : "settled_in"
+
+    orders ||--o{ trades : "matched_in"
