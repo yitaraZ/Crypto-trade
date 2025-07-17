@@ -1,0 +1,108 @@
+erDiagram
+    USERS {
+        int user_id PK
+        string username UK
+        string email UK
+        string password
+        string first_name
+        string last_name
+        datetime created_at
+        datetime updated_at
+        boolean is_active
+    }
+
+    CRYPTO_CURRENCIES {
+        int crypto_id PK
+        string symbol UK
+        string name
+        decimal current_price
+        boolean is_active
+        datetime updated_at
+    }
+
+    FIAT_CURRENCIES {
+        int fiat_id PK
+        string currency_code UK
+        string currency_name
+        decimal exchange_rate_to_usd
+        boolean is_active
+        datetime updated_at
+    }
+
+    WALLETS {
+        int wallet_id PK
+        int user_id FK
+        int crypto_id FK
+        decimal balance
+        datetime created_at
+        datetime updated_at
+    }
+
+    FIAT_WALLETS {
+        int fiat_wallet_id PK
+        int user_id FK
+        int fiat_id FK
+        decimal balance
+        datetime created_at
+        datetime updated_at
+    }
+
+    ORDERS {
+        int order_id PK
+        int user_id FK
+        int crypto_id FK
+        int fiat_id FK
+        string order_type
+        decimal quantity
+        decimal price
+        decimal total_amount
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    TRADES {
+        int trade_id PK
+        int buyer_id FK
+        int seller_id FK
+        int crypto_id FK
+        int fiat_id FK
+        decimal quantity
+        decimal price
+        decimal total_amount
+        string status
+        datetime created_at
+        datetime completed_at
+    }
+
+    TRANSACTIONS {
+        int transaction_id PK
+        int from_user_id FK
+        int to_user_id FK
+        int crypto_id FK
+        string transaction_type
+        decimal amount
+        string status
+        string external_address
+        datetime created_at
+        datetime completed_at
+    }
+
+    USERS ||--o{ WALLETS : "owns"
+    USERS ||--o{ FIAT_WALLETS : "owns"
+    USERS ||--o{ ORDERS : "creates"
+    USERS ||--o{ TRADES : "buyer"
+    USERS ||--o{ TRADES : "seller"
+    USERS ||--o{ TRANSACTIONS : "from"
+    USERS ||--o{ TRANSACTIONS : "to"
+
+    CRYPTOCURRENCIES ||--o{ WALLETS : "stored_in"
+    CRYPTOCURRENCIES ||--o{ ORDERS : "for"
+    CRYPTOCURRENCIES ||--o{ TRADES : "involves"
+    CRYPTOCURRENCIES ||--o{ TRANSACTIONS : "involves"
+
+    FIAT_CURRENCIES ||--o{ FIAT_WALLETS : "stored_in"
+    FIAT_CURRENCIES ||--o{ ORDERS : "priced_in"
+    FIAT_CURRENCIES ||--o{ TRADES : "settled_in"
+
+    ORDERS ||--o{ TRADES : "matched_in"
