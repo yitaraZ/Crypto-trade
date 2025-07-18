@@ -1,12 +1,12 @@
 const User = require('../models/User');
 
-// Get all users
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ['password_hash'] }
     });
-    
+
     res.json({
       success: true,
       data: users
@@ -19,11 +19,11 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Get user by ID
+
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const user = await User.findByPk(id, {
       attributes: { exclude: ['password_hash'] }
     });
@@ -47,11 +47,11 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Register new user
+
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    
+
     const user = await User.create({
       username,
       email,
@@ -74,13 +74,13 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login user
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     const user = await User.findOne({ where: { email } });
-    
+
     if (!user || !(await user.validatePassword(password))) {
       return res.status(401).json({
         success: false,

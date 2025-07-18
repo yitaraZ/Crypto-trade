@@ -48,4 +48,41 @@ User.prototype.validatePassword = async function(password) {
 };
 
 
+User.associate = (models) => {
+  User.hasMany(models.Wallet, {
+    foreignKey: 'user_id',
+    as: 'wallets'
+  });
+  
+  User.hasMany(models.FiatWallet, {
+    foreignKey: 'user_id',
+    as: 'fiatWallets'
+  });
+  
+  User.hasMany(models.Order, {
+    foreignKey: 'user_id',
+    as: 'orders'
+  });
+  
+  User.hasMany(models.Trade, {
+    foreignKey: 'buyer_id',
+    as: 'buyTrades'
+  });
+  
+  User.hasMany(models.Trade, {
+    foreignKey: 'seller_id',
+    as: 'sellTrades'
+  });
+  
+  User.hasMany(models.Transaction, {
+    foreignKey: 'sender_id',
+    as: 'sentTransactions'
+  });
+  
+  User.hasMany(models.Transaction, {
+    foreignKey: 'receiver_id',
+    as: 'receivedTransactions'
+  });
+};
+
 module.exports = User;
