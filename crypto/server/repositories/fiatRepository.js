@@ -12,8 +12,8 @@ exports.findFiatWhere = (where) => {
   return FiatCurrency.findAll({ where });
 };
 
-exports.createFiat = ({ currency_code, currency_name, rate_to_usd }) => {
-  return FiatCurrency.create({ currency_code, currency_name, rate_to_usd });
+exports.createFiat = (data) => {
+  return FiatCurrency.create(data);
 };
 
 exports.updateFiat = async (fiat, newData) => {

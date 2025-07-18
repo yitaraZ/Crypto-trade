@@ -12,8 +12,8 @@ exports.findCryptoWhere = (where) => {
   return CryptoCurrency.findAll({ where });
 };
 
-exports.createCrypto = ({ symbol, crypto_name, current_price }) => {
-  return CryptoCurrency.create({ symbol, crypto_name, current_price });
+exports.createCrypto = (data) => {
+  return CryptoCurrency.create(data);
 };
 
 exports.updateCrypto = async (crypto, newData) => {

@@ -12,8 +12,8 @@ exports.findUserById = (id) => {
   });
 };
 
-exports.createUser = ({ username, email, password_hash }) => {
-  return User.create({ username, email, password_hash });
+exports.createUser = (data) => {
+  return User.create(data);
 };
 
 exports.findUserByEmail = (email) => {
