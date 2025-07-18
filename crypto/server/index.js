@@ -1,12 +1,14 @@
 const express = require('express');
-const sequelize = require('./config/db');
+const sequelize = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
+const currencyRoutes = require('./routes/currencyRoutes');
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 app.use('/users', userRoutes);
+app.use('/currencies', currencyRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
