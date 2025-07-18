@@ -1,90 +1,51 @@
+const currencyService = require('../services/currencyService');
 
-const CryptoCurrency = require('../models/CryptoCurrency');
-const FiatCurrency = require('../models/FiatCurrency');
-
-
+// GET all fiats
 exports.getAllFiatCurrency = async (req, res) => {
-    try {
-        const fiat = await FiatCurrency.findAll();
-
-        res.json({
-            success: true,
-            data: fiat
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
+  try {
+    const fiat = await currencyService.getAllFiats();
+    res.json({ success: true, data: fiat });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
+// GET all cryptos
 exports.getAllCryptoCurrency = async (req, res) => {
-    try {
-        const crypto = await CryptoCurrency.findAll();
-
-        res.json({
-            success: true,
-            data: crypto
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
+  try {
+    const crypto = await currencyService.getAllCryptos();
+    res.json({ success: true, data: crypto });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
+// GET fiat by ID
 exports.getFiatById = async (req, res) => {
   try {
     const { fiatId } = req.params;
-    
-    const fiat = await FiatCurrency.findAll({
-      where: { fiat_id: fiatId }
-    });
-
-    res.json({
-      success: true,
-      data: fiat
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    const fiat = await currencyService.getFiatById(fiatId);
+    res.json({ success: true, data: fiat });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
+// GET crypto by ID
 exports.getCryptoById = async (req, res) => {
   try {
     const { cryptoId } = req.params;
-    
-    const crypto = await CryptoCurrency.findAll({
-      where: { crypto_id: cryptoId }
-    });
-
-    res.json({
-      success: true,
-      data: crypto
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    const crypto = await currencyService.getCryptoById(cryptoId);
+    res.json({ success: true, data: crypto });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
+// CREATE fiat
 exports.createFiat = async (req, res) => {
   try {
-    const { currency_code, currency_name, rate_to_usd } = req.body;
-
-    const fiat = await FiatCurrency.create({
-      currency_code,
-      currency_name,
-      rate_to_usd
-    });
-
+    const fiat = await currencyService.createFiat(req.body);
     res.status(201).json({
       success: true,
       data: {
@@ -93,24 +54,15 @@ exports.createFiat = async (req, res) => {
         rate_to_USD: fiat.rate_to_usd
       }
     });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message
-    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
   }
 };
 
+// CREATE crypto
 exports.createCrypto = async (req, res) => {
   try {
-    const { symbol, crypto_name, current_price } = req.body;
-
-    const crypto = await CryptoCurrency.create({
-      symbol,
-      crypto_name,
-      current_price
-    });
-
+    const crypto = await currencyService.createCrypto(req.body);
     res.status(201).json({
       success: true,
       data: {
@@ -119,66 +71,41 @@ exports.createCrypto = async (req, res) => {
         current_price: crypto.current_price
       }
     });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message
-    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
   }
 };
 
+// UPDATE fiat
 exports.updateFiat = async (req, res) => {
   try {
     const { fiatId } = req.params;
     const { rate_to_usd } = req.body;
 
-    const fiat = await FiatCurrency.findByPk(fiatId);
-    
-    if (!fiat) {
-      return res.status(404).json({
-        success: false,
-        message: 'fiat currency not found'
-      });
+    const updated = await currencyService.updateFiatRate(fiatId, rate_to_usd);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Fiat currency not found' });
     }
 
-    await fiat.update({ rate_to_usd });
-
-    res.json({
-      success: true,
-      data: "Fiat currency updated successfully"
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.json({ success: true, data: 'Fiat currency updated successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
+// UPDATE crypto
 exports.updateCrypto = async (req, res) => {
   try {
     const { cryptoId } = req.params;
     const { current_price } = req.body;
 
-    const crypto = await CryptoCurrency.findByPk(cryptoId);
-    
-    if (!crypto) {
-      return res.status(404).json({
-        success: false,
-        message: 'crypto currency not found'
-      });
+    const updated = await currencyService.updateCryptoPrice(cryptoId, current_price);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Crypto currency not found' });
     }
 
-    await crypto.update({ current_price });
-
-    res.json({
-      success: true,
-      data: "crypto currency updated successfully"
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.json({ success: true, data: 'Crypto currency updated successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };
