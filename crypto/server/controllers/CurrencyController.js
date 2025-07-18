@@ -126,3 +126,59 @@ exports.createCrypto = async (req, res) => {
     });
   }
 };
+
+exports.updateFiat = async (req, res) => {
+  try {
+    const { fiatId } = req.params;
+    const { rate_to_usd } = req.body;
+
+    const fiat = await FiatCurrency.findByPk(fiatId);
+    
+    if (!fiat) {
+      return res.status(404).json({
+        success: false,
+        message: 'fiat currency not found'
+      });
+    }
+
+    await fiat.update({ rate_to_usd });
+
+    res.json({
+      success: true,
+      data: "Fiat currency updated successfully"
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+exports.updateCrypto = async (req, res) => {
+  try {
+    const { cryptoId } = req.params;
+    const { current_price } = req.body;
+
+    const crypto = await CryptoCurrency.findByPk(cryptoId);
+    
+    if (!crypto) {
+      return res.status(404).json({
+        success: false,
+        message: 'crypto currency not found'
+      });
+    }
+
+    await crypto.update({ current_price });
+
+    res.json({
+      success: true,
+      data: "crypto currency updated successfully"
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
