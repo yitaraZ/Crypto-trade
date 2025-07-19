@@ -59,4 +59,7 @@ node seeders/seedAllScenarios.js
 node index.js
 ```
 
+### API DOC
+
+สามารถ import ไฟล์ test crypto.postman_collection ใน postman ได้เลย
 
