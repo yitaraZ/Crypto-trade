@@ -8,7 +8,7 @@ clone repo
 ```
 git clone https://github.com/yitaraZ/Crypto-trade
 ```
-เปลี่ยน directory ไปที่ Crypto-trade ที่เป็น
+เปลี่ยน directory ไปที่ Crypto-trade 
 ```
 cd SortingHat
 ```
