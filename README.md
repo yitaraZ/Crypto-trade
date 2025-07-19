@@ -10,7 +10,7 @@ git clone https://github.com/yitaraZ/Crypto-trade
 ```
 เปลี่ยน directory ไปที่ Crypto-trade 
 ```
-cd SortingHat
+cd Crypto-trade 
 ```
 ติดตั้ง dependency 
 ```
