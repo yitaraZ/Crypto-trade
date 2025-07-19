@@ -72,14 +72,14 @@ async function seedAllScenarios() {
     await Trade.bulkCreate([
       {
         buyer_id: 2, seller_id: 1,
-        order_id_buyer: 2, order_id_seller: 1,
+        order_id: 1,
         crypto_id: 1, fiat_id: 1,
         quantity: '0.2', price: 31000.00, total_amount: 6200.00,
         trade_status: 'pending',
       },
       {
         buyer_id: 4, seller_id: 3,
-        order_id_buyer: 4, order_id_seller: 3,
+        order_id: 3,
         crypto_id: 2, fiat_id: 2,
         quantity: '1.0', price: 2000.00, total_amount: 2000.00,
         trade_status: 'completed',
