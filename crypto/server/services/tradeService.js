@@ -25,7 +25,7 @@ exports.completeTrade = async (tradeId) => {
     if (!trade) throw new Error('Trade not found');
     if (trade.trade_status !== 'pending') throw new Error('Trade already completed or invalid status');
 
-    const { buyer_id, seller_id, order_id_buyer, order_id_seller, crypto_id, fiat_id, quantity, total_amount } = trade;
+    const { buyer_id, seller_id, order_id, crypto_id, fiat_id, quantity, total_amount } = trade;
 
     //check balances
     const buyerFiatBalance = parseFloat(await fiatWalletService.getBalance(buyer_id, fiat_id));
@@ -45,8 +45,7 @@ exports.completeTrade = async (tradeId) => {
 
 
     await Trade.updateStatus(tradeId, 'completed');
-    await orderService.completeOrder(order_id_buyer, buyer_id);
-    await orderService.completeOrder(order_id_seller, seller_id);
+    await orderService.completeOrder(order_id, seller_id);
 
 
     await Transaction.create({
@@ -55,6 +54,15 @@ exports.completeTrade = async (tradeId) => {
         crypto_id: crypto_id,
         trans_type: 'transfer',
         amount: quantity,
+        trans_status: 'completed',
+    });
+
+    await Transaction.create({
+        sender_id: buyer_id,
+        receiver_id: seller_id,
+        fiat_id: fiat_id,
+        trans_type: 'transfer',
+        amount: totalAmount,
         trans_status: 'completed',
     });
 
@@ -76,8 +84,7 @@ exports.createTrade = async (tradeData) => {
     const {
         buyer_id,
         seller_id,
-        order_id_buyer,
-        order_id_seller,
+        order_id,
         crypto_id,
         fiat_id,
         quantity,
@@ -121,8 +128,7 @@ exports.createTrade = async (tradeData) => {
     const newTrade = await Trade.create({
         buyer_id,
         seller_id,
-        order_id_buyer,
-        order_id_seller,
+        order_id,
         crypto_id,
         fiat_id,
         quantity,
