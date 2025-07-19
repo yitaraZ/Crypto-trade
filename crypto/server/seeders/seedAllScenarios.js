@@ -43,9 +43,9 @@ async function seedAllScenarios() {
     await Wallet.bulkCreate([
       { user_id: 1, crypto_id: 1, balance: '1.5' },   
       { user_id: 2, crypto_id: 1, balance: '0.5' },   
-      { user_id: 3, crypto_id: 2, balance: '5.0' },   // Carol ETH 5
-      { user_id: 4, crypto_id: 2, balance: '10.0' },  // Dave ETH 10
-      { user_id: 5, crypto_id: 1, balance: '0.0' },   // Eve BTC 0 (no balance)
+      { user_id: 3, crypto_id: 2, balance: '5.0' },   
+      { user_id: 4, crypto_id: 2, balance: '10.0' },  
+      { user_id: 5, crypto_id: 1, balance: '0.0' },   
     ]);
     console.log('Crypto wallets seeded');
 
@@ -60,11 +60,11 @@ async function seedAllScenarios() {
 
    
     await Order.bulkCreate([
-      { user_id: 1, crypto_id: 1, fiat_id: 1, order_type: 'sell', quantity: '0.2', price: 31000.00, total_amount: 6200.00, order_status: 'pending' },  // Alice ขาย BTC
-      { user_id: 2, crypto_id: 1, fiat_id: 1, order_type: 'buy', quantity: '0.2', price: 31000.00, total_amount: 6200.00, order_status: 'pending' },   // Bob ซื้อ BTC
-      { user_id: 3, crypto_id: 2, fiat_id: 2, order_type: 'sell', quantity: '2.0', price: 2100.00, total_amount: 4200.00, order_status: 'cancelled' }, // Carol ยกเลิกขาย ETH
-      { user_id: 4, crypto_id: 2, fiat_id: 2, order_type: 'buy', quantity: '1.0', price: 2000.00, total_amount: 2000.00, order_status: 'completed' },    // Dave ซื้อ ETH สำเร็จ
-      { user_id: 5, crypto_id: 1, fiat_id: 1, order_type: 'sell', quantity: '0.1', price: 32000.00, total_amount: 3200.00, order_status: 'pending' },   // Eve ขาย BTC (ไม่มี balance)
+      { user_id: 1, crypto_id: 1, fiat_id: 1, order_type: 'sell', quantity: '0.2', price: 31000.00, total_amount: 6200.00, order_status: 'pending' },  //alice ขาย BTC
+      { user_id: 2, crypto_id: 1, fiat_id: 1, order_type: 'buy', quantity: '0.2', price: 31000.00, total_amount: 6200.00, order_status: 'pending' },   //bob ซื้อ BTC
+      { user_id: 3, crypto_id: 2, fiat_id: 2, order_type: 'sell', quantity: '2.0', price: 2100.00, total_amount: 4200.00, order_status: 'cancelled' }, //carol ยกเลิกขาย ETH
+      { user_id: 4, crypto_id: 2, fiat_id: 2, order_type: 'buy', quantity: '1.0', price: 2000.00, total_amount: 2000.00, order_status: 'completed' },    //dave ซื้อ ETH สำเร็จ
+      { user_id: 5, crypto_id: 1, fiat_id: 1, order_type: 'sell', quantity: '0.1', price: 32000.00, total_amount: 3200.00, order_status: 'pending' },   //eve ขาย BTC (ไม่มี balance)
     ]);
     console.log('Orders seeded');
 
@@ -89,15 +89,10 @@ async function seedAllScenarios() {
 
 
     await Transaction.bulkCreate([
-      // Transfer pending
       { sender_id: 1, receiver_id: 2, crypto_id: 1, trans_type: 'transfer', amount: '0.2', trans_status: 'pending' },
-      // Deposit completed
       { sender_id: null, receiver_id: 1, fiat_id: 1, trans_type: 'deposit', amount: '2500', trans_status: 'completed' },
-      // Withdrawal failed
       { sender_id: 2, receiver_id: null, fiat_id: 1, trans_type: 'withdrawal', amount: '1000', trans_status: 'failed' },
-      // Transfer completed
       { sender_id: 3, receiver_id: 4, crypto_id: 2, trans_type: 'transfer', amount: '1.0', trans_status: 'completed' },
-      // Deposit pending
       { sender_id: null, receiver_id: 5, fiat_id: 1, trans_type: 'deposit', amount: '1500', trans_status: 'pending' },
     ]);
     console.log('Transactions seeded');
