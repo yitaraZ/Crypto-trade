@@ -42,6 +42,7 @@ exports.increaseBalance = async (userId, cryptoId, amount) => {
   const current = new Decimal(wallet.balance);
   const add = new Decimal(amount);
   const newBalance = current.plus(add);
+  
   return await walletRepo.update(wallet, { balance: newBalance });
 };
 

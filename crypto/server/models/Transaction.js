@@ -9,7 +9,7 @@ const Transaction = sequelize.define('Transaction', {
   },
   sender_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'users',
       key: 'user_id'
@@ -17,7 +17,7 @@ const Transaction = sequelize.define('Transaction', {
   },
   receiver_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'users',
       key: 'user_id'
@@ -25,10 +25,18 @@ const Transaction = sequelize.define('Transaction', {
   },
   crypto_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'crypto_currencies',
       key: 'crypto_id'
+    }
+  },
+   fiat_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'fiat_currencies',
+      key: 'fiat_id'
     }
   },
   trans_type: {

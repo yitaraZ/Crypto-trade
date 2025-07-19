@@ -1,4 +1,5 @@
 const FiatWalletRepo = require('../repositories/fiatWalletRepository');
+const transactionRepo = require('../repositories/transactionRepository');
 const Decimal = require('decimal.js');
 
 exports.getAllWallets = () => FiatWalletRepo.findAll();
@@ -42,6 +43,13 @@ exports.increaseBalance = async (userId, fiatId, amount) => {
   const current = new Decimal(wallet.balance);
   const add = new Decimal(amount);
   const newBalance = current.plus(add);
+  await transactionRepo.create({
+    receiver_id: userId,
+    fiat_id: fiatId,
+    trans_type: 'deposit',
+    amount,
+    trans_status: 'completed',
+  });
   return await FiatWalletRepo.update(wallet, { balance: newBalance });
 };
 
@@ -55,5 +63,14 @@ exports.decreaseBalance = async (userId, fiatId, amount) => {
   }
 
   const newBalance = current.minus(subtractAmount);
+
+  await Transaction.create({
+    sender_id: userId,
+    fiat_id: fiatId,
+    trans_type: 'withdrawal',
+    amount,
+    trans_status: 'completed',
+  });
+
   return await FiatWalletRepo.update(wallet, { balance: newBalance });
 };
