@@ -20,7 +20,7 @@ exports.placeOrder = async (req, res) => {
 
 exports.cancelOrder = async (req, res) => {
   try {
-    const result = await orderService.cancelOrder(req.params.id, req.user.id);
+    const result = await orderService.cancelOrder(req.params.id);
     res.json({ success: true, data: result });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });

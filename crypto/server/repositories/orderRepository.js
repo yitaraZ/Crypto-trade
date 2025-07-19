@@ -6,10 +6,8 @@ exports.findAll = async () => {
   });
 };
 
-exports.findById = async (id) => {
-  return await Order.findOne({
-    where: { order_id: id }
-  });
+exports.findById = async (orderId) => {
+  return await Order.findByPk(orderId);
 };
 
 exports.getOpenOrders = async (cryptoId) => {

@@ -19,9 +19,9 @@ exports.completeOrder = async (orderId, userId) => {
   });
 };
 
-exports.cancelOrder = async (orderId, userId) => {
+exports.cancelOrder = async (orderId) => {
     const order = await orderRepo.findById(orderId);
-    if (!order || order.user_id !== userId) throw new Error("Order not found or unauthorized");
+    if (!order) throw new Error("Order not found or unauthorized");
 
     return await order.update({ order_status: 'cancelled' });
 };
