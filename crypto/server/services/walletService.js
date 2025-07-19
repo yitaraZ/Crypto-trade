@@ -1,4 +1,5 @@
 const walletRepo = require('../repositories/walletRepository');
+const Decimal = require('decimal.js');
 
 exports.getAllWallets = () => walletRepo.findAll();
 
@@ -17,4 +18,40 @@ exports.deleteWallet = async (id) => {
   if (!wallet) return false;
   await walletRepo.delete(id);
   return true;
+};
+
+exports.getOrCreateWallet = async (userId, cryptoId) => {
+  let wallet = await walletRepo.findByUserAndCrypto(userId, cryptoId);
+  if (!wallet) {
+    wallet = await walletRepo.create({
+      user_id: userId,
+      crypto_id: cryptoId,
+      balance: 0,
+    });
+  }
+  return wallet;
+};
+
+exports.getBalance = async (userId, cryptoId) => {
+  const wallet = await walletRepo.findByUserAndCrypto(userId, cryptoId);
+  return wallet ? wallet.balance : 0;
+};
+
+exports.increaseBalance = async (userId, cryptoId, amount) => {
+  const wallet = await exports.getOrCreateWallet(userId, cryptoId);
+  const current = new Decimal(wallet.balance);
+  const add = new Decimal(amount);
+  const newBalance = current.plus(add);
+  return await walletRepo.update(wallet, { balance: newBalance });
+};
+
+exports.decreaseBalance = async (userId, cryptoId, amount) => {
+  const wallet = await exports.getOrCreateWallet(userId, cryptoId);
+  if (wallet.balance < amount) {
+    throw new Error('Insufficient balance');
+  }
+  const current = new Decimal(wallet.balance);
+  const add = new Decimal(amount);
+  const newBalance = current.minus(add);
+  return await walletRepo.update(wallet, { balance: newBalance });
 };

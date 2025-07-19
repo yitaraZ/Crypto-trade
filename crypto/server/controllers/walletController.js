@@ -47,3 +47,36 @@ exports.delete = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+exports.getBalance = async (req, res) => {
+  try {
+    const { userId, cryptoId } = req.params;
+    const balance = await walletService.getBalance(userId, cryptoId);
+    res.json({ balance });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.increaseBalance = async (req, res) => {
+  try {
+    const { userId, cryptoId } = req.body;
+    const { amount } = req.body;
+    const updated = await walletService.increaseBalance(userId, cryptoId, amount);
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.decreaseBalance = async (req, res) => {
+  try {
+    const { userId, cryptoId } = req.body;
+    const { amount } = req.body;
+    const updated = await walletService.decreaseBalance(userId, cryptoId, amount);
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};

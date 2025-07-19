@@ -13,3 +13,7 @@ exports.update = async (wallet, data) =>
 
 exports.delete = (walletId) =>
   Wallet.destroy({ where: { wallet_id: walletId } });
+
+exports.findByUserAndCrypto = async (userId, cryptoId) => 
+  Wallet.findOne({ where: { user_id: userId, crypto_id: cryptoId } });
+
