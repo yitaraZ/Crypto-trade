@@ -33,26 +33,4 @@ const CryptoCurrency = sequelize.define('CryptoCurrency', {
 });
 
 
-CryptoCurrency.associate = (models) => {
-  CryptoCurrency.hasMany(models.Wallet, {
-    foreignKey: 'crypto_id',
-    as: 'wallets'
-  });
-  
-  CryptoCurrency.hasMany(models.Order, {
-    foreignKey: 'crypto_id',
-    as: 'orders'
-  });
-  
-  CryptoCurrency.hasMany(models.Trade, {
-    foreignKey: 'crypto_id',
-    as: 'trades'
-  });
-  
-  CryptoCurrency.hasMany(models.Transaction, {
-    foreignKey: 'crypto_id',
-    as: 'transactions'
-  });
-};
-
 module.exports = CryptoCurrency;

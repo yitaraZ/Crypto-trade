@@ -59,26 +59,4 @@ const Order = sequelize.define('Order', {
 });
 
 
-Order.associate = (models) => {
-  Order.belongsTo(models.User, {
-    foreignKey: 'user_id',
-    as: 'user'
-  });
-  
-  Order.belongsTo(models.CryptoCurrency, {
-    foreignKey: 'crypto_id',
-    as: 'cryptocurrency'
-  });
-  
-  Order.belongsTo(models.FiatCurrency, {
-    foreignKey: 'fiat_id',
-    as: 'fiatCurrency'
-  });
-  
-  Order.hasMany(models.Trade, {
-    foreignKey: 'order_id',
-    as: 'trades'
-  });
-};
-
 module.exports = Order;

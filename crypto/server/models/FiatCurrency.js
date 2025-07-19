@@ -33,21 +33,4 @@ const FiatCurrency = sequelize.define('FiatCurrency', {
 });
 
 
-FiatCurrency.associate = (models) => {
-  FiatCurrency.hasMany(models.FiatWallet, {
-    foreignKey: 'fiat_id',
-    as: 'fiatWallets'
-  });
-  
-  FiatCurrency.hasMany(models.Order, {
-    foreignKey: 'fiat_id',
-    as: 'orders'
-  });
-  
-  FiatCurrency.hasMany(models.Trade, {
-    foreignKey: 'fiat_id',
-    as: 'trades'
-  });
-};
-
 module.exports = FiatCurrency;

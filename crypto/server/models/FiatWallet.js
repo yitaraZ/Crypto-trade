@@ -36,16 +36,4 @@ const FiatWallet = sequelize.define('FiatWallet', {
 });
 
 
-FiatWallet.associate = (models) => {
-  FiatWallet.belongsTo(models.User, {
-    foreignKey: 'user_id',
-    as: 'user'
-  });
-  
-  FiatWallet.belongsTo(models.FiatCurrency, {
-    foreignKey: 'fiat_id',
-    as: 'fiatCurrency'
-  });
-};
-
 module.exports = FiatWallet;

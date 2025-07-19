@@ -36,16 +36,5 @@ const Wallet = sequelize.define('Wallet', {
 });
 
 
-Wallet.associate = (models) => {
-  Wallet.belongsTo(models.User, {
-    foreignKey: 'user_id',
-    as: 'user'
-  });
-  
-  Wallet.belongsTo(models.CryptoCurrency, {
-    foreignKey: 'crypto_id',
-    as: 'cryptocurrency'
-  });
-};
 
 module.exports = Wallet;

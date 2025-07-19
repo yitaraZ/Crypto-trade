@@ -51,21 +51,5 @@ const Transaction = sequelize.define('Transaction', {
 });
 
 
-Transaction.associate = (models) => {
-  Transaction.belongsTo(models.User, {
-    foreignKey: 'sender_id',
-    as: 'sender'
-  });
-  
-  Transaction.belongsTo(models.User, {
-    foreignKey: 'receiver_id',
-    as: 'receiver'
-  });
-  
-  Transaction.belongsTo(models.CryptoCurrency, {
-    foreignKey: 'crypto_id',
-    as: 'cryptocurrency'
-  });
-};
 
 module.exports = Transaction;
