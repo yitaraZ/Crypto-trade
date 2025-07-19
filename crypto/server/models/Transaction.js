@@ -43,10 +43,6 @@ const Transaction = sequelize.define('Transaction', {
     type: DataTypes.ENUM('pending', 'completed', 'failed'),
     defaultValue: 'pending'
   },
-  completed_at: {
-    type: DataTypes.DATE,
-    allowNull: true
-  }
 }, {
   tableName: 'transactions',
   timestamps: true,

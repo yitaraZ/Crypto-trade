@@ -4,9 +4,9 @@ const userRoutes = require('./routes/userRoutes');
 const currencyRoutes = require('./routes/currencyRoutes');
 const walletRoutes = require('./routes/walletRoutes');
 const fiatWalletRoutes = require('./routes/fiatWalletRoutes');
-const fiatRoutes = require('./routes/fiatRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const tradeRoutes = require('./routes/tradeRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 
 const app = express();
@@ -19,6 +19,7 @@ app.use('/wallets', walletRoutes);
 app.use('/fiat_wallets', fiatWalletRoutes);
 app.use('/orders', orderRoutes);
 app.use('/trades', tradeRoutes);
+app.use('/transactions', transactionRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
