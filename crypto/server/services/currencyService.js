@@ -1,7 +1,7 @@
 const fiatRepo = require('../repositories/fiatRepository');
 const cryptoRepo = require('../repositories/cryptoRepository');
 
-// Fiat services
+//fiat services
 exports.getAllFiats = () => fiatRepo.findAllFiats();
 
 exports.getFiatById = (id) => fiatRepo.findFiatWhere({ fiat_id: id });
@@ -15,7 +15,7 @@ exports.updateFiatRate = async (fiatId, rate_to_usd) => {
   return true;
 };
 
-// Crypto services
+//crypto services
 exports.getAllCryptos = () => cryptoRepo.findAllCryptos();
 
 exports.getCryptoById = (id) => cryptoRepo.findCryptoWhere({ crypto_id: id });

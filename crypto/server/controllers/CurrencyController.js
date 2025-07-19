@@ -1,6 +1,6 @@
 const currencyService = require('../services/currencyService');
 
-// GET all fiats
+
 exports.getAllFiatCurrency = async (req, res) => {
   try {
     const fiat = await currencyService.getAllFiats();
@@ -10,7 +10,7 @@ exports.getAllFiatCurrency = async (req, res) => {
   }
 };
 
-// GET all cryptos
+
 exports.getAllCryptoCurrency = async (req, res) => {
   try {
     const crypto = await currencyService.getAllCryptos();
@@ -20,7 +20,7 @@ exports.getAllCryptoCurrency = async (req, res) => {
   }
 };
 
-// GET fiat by ID
+
 exports.getFiatById = async (req, res) => {
   try {
     const { fiatId } = req.params;
@@ -31,7 +31,7 @@ exports.getFiatById = async (req, res) => {
   }
 };
 
-// GET crypto by ID
+
 exports.getCryptoById = async (req, res) => {
   try {
     const { cryptoId } = req.params;
@@ -42,7 +42,7 @@ exports.getCryptoById = async (req, res) => {
   }
 };
 
-// CREATE fiat
+
 exports.createFiat = async (req, res) => {
   try {
     const fiat = await currencyService.createFiat(req.body);
@@ -59,7 +59,7 @@ exports.createFiat = async (req, res) => {
   }
 };
 
-// CREATE crypto
+
 exports.createCrypto = async (req, res) => {
   try {
     const crypto = await currencyService.createCrypto(req.body);
@@ -76,7 +76,7 @@ exports.createCrypto = async (req, res) => {
   }
 };
 
-// UPDATE fiat
+
 exports.updateFiat = async (req, res) => {
   try {
     const { fiatId } = req.params;
@@ -93,7 +93,7 @@ exports.updateFiat = async (req, res) => {
   }
 };
 
-// UPDATE crypto
+
 exports.updateCrypto = async (req, res) => {
   try {
     const { cryptoId } = req.params;
