@@ -64,7 +64,7 @@ exports.decreaseBalance = async (userId, fiatId, amount) => {
 
   const newBalance = current.minus(subtractAmount);
 
-  await Transaction.create({
+  await transactionRepo.create({
     sender_id: userId,
     fiat_id: fiatId,
     trans_type: 'withdrawal',
