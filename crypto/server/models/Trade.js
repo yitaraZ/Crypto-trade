@@ -58,7 +58,7 @@ const Trade = sequelize.define('Trade', {
     allowNull: false
   },
   trade_status: {
-    type: DataTypes.ENUM('pending', 'completed', 'failed'),
+    type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
     defaultValue: 'pending'
   },
 }, {
