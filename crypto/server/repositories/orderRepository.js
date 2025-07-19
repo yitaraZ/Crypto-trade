@@ -6,6 +6,12 @@ exports.findAll = async () => {
   });
 };
 
+exports.findById = async (id) => {
+  return await Order.findOne({
+    where: { order_id: id }
+  });
+};
+
 exports.getOpenOrders = async (cryptoId) => {
   return await Order.findAll({
     where: {

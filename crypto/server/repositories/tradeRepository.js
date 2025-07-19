@@ -20,9 +20,5 @@ exports.updateStatus = async (id, status) => {
   if (!trade) return null;
 
   trade.trade_status = status;
-  if (status === 'completed') {
-    trade.completed_at = new Date();
-  }
-
   return await trade.save();
 };

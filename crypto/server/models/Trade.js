@@ -23,6 +23,15 @@ const Trade = sequelize.define('Trade', {
       key: 'user_id'
     }
   },
+  order_id_buyer: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  order_id_seller: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
   crypto_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -55,14 +64,10 @@ const Trade = sequelize.define('Trade', {
     type: DataTypes.ENUM('pending', 'completed', 'failed'),
     defaultValue: 'pending'
   },
-  completed_at: {
-    type: DataTypes.DATE,
-    allowNull: true
-  }
 }, {
   tableName: 'trades',
   timestamps: false,
-  createdAt: 'created_at'
+  updatedAt: 'updated_at',
 });
 
 
@@ -71,17 +76,17 @@ Trade.associate = (models) => {
     foreignKey: 'buyer_id',
     as: 'buyer'
   });
-  
+
   Trade.belongsTo(models.User, {
     foreignKey: 'seller_id',
     as: 'seller'
   });
-  
+
   Trade.belongsTo(models.CryptoCurrency, {
     foreignKey: 'crypto_id',
     as: 'cryptocurrency'
   });
-  
+
   Trade.belongsTo(models.FiatCurrency, {
     foreignKey: 'fiat_id',
     as: 'fiatCurrency'

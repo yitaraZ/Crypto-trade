@@ -47,11 +47,13 @@ exports.increaseBalance = async (userId, cryptoId, amount) => {
 
 exports.decreaseBalance = async (userId, cryptoId, amount) => {
   const wallet = await exports.getOrCreateWallet(userId, cryptoId);
-  if (wallet.balance < amount) {
+  const current = new Decimal(wallet.balance);
+  const subtractAmount = new Decimal(amount);
+
+  if (current.lessThan(subtractAmount)) {
     throw new Error('Insufficient balance');
   }
-  const current = new Decimal(wallet.balance);
-  const add = new Decimal(amount);
-  const newBalance = current.minus(add);
+
+  const newBalance = current.minus(subtractAmount);
   return await walletRepo.update(wallet, { balance: newBalance });
 };

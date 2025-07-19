@@ -1,9 +1,12 @@
 const Trade = require('../repositories/tradeRepository');
 const User = require('../repositories/userRepository');
 const Crypto = require('../repositories/cryptoRepository');
+const Transaction = require('../repositories/transactionRepository');
 const Fiat = require('../repositories/fiatRepository');
 const walletService = require('../services/walletService');
 const fiatWalletService = require('./fiatWalletService');
+const orderService = require('./orderService');
+
 
 exports.getAllTrades = async () => {
     return await Trade.findAll();
@@ -17,12 +20,46 @@ exports.getTradeById = async (id) => {
     return trade;
 };
 
-exports.completeTrade = async (id) => {
-    const updatedTrade = await Trade.updateStatus(id, 'completed');
-    if (!updatedTrade) {
-        throw new Error('Trade not found or cannot update status');
-    }
-    return updatedTrade;
+exports.completeTrade = async (tradeId) => {
+    const trade = await Trade.findById(tradeId);
+    if (!trade) throw new Error('Trade not found');
+    if (trade.trade_status !== 'pending') throw new Error('Trade already completed or invalid status');
+
+    const { buyer_id, seller_id, order_id_buyer, order_id_seller, crypto_id, fiat_id, quantity, total_amount } = trade;
+
+    //check balances
+    const buyerFiatBalance = parseFloat(await fiatWalletService.getBalance(buyer_id, fiat_id));
+    const totalAmount = parseFloat(total_amount);
+    if (buyerFiatBalance < totalAmount) throw new Error('Buyer has insufficient fiat balance');
+
+    const sellerCryptoBalance = parseFloat(await walletService.getBalance(seller_id, crypto_id));
+    const tradeQuantity = parseFloat(quantity); 
+    if (sellerCryptoBalance < tradeQuantity) throw new Error('Seller has insufficient crypto balance');
+
+    //transfer balances
+    await fiatWalletService.decreaseBalance(buyer_id, fiat_id, total_amount);
+    await fiatWalletService.increaseBalance(seller_id, fiat_id, total_amount);
+
+    await walletService.decreaseBalance(seller_id, crypto_id, quantity);
+    await walletService.increaseBalance(buyer_id, crypto_id, quantity);
+
+
+    await Trade.updateStatus(tradeId, 'completed');
+    await orderService.completeOrder(order_id_buyer, buyer_id);
+    await orderService.completeOrder(order_id_seller, seller_id);
+
+
+    await Transaction.create({
+        sender_id: seller_id,
+        receiver_id: buyer_id,
+        crypto_id: crypto_id,
+        trans_type: 'transfer',
+        amount: quantity,
+        trans_status: 'completed',
+    });
+
+
+    return { tradeId, status: 'completed' };
 };
 
 exports.cancelTrade = async (id) => {
@@ -39,13 +76,14 @@ exports.createTrade = async (tradeData) => {
     const {
         buyer_id,
         seller_id,
+        order_id_buyer,
+        order_id_seller,
         crypto_id,
         fiat_id,
         quantity,
         price,
         total_amount,
     } = tradeData;
-
 
     const buyer = await User.findUserById(buyer_id);
     if (!buyer) throw new Error('Buyer not found');
@@ -83,12 +121,13 @@ exports.createTrade = async (tradeData) => {
     const newTrade = await Trade.create({
         buyer_id,
         seller_id,
+        order_id_buyer,
+        order_id_seller,
         crypto_id,
         fiat_id,
         quantity,
         price,
         total_amount,
     });
-
     return newTrade;
 };
