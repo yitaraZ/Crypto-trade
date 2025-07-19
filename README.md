@@ -12,10 +12,6 @@ git clone https://github.com/yitaraZ/Crypto-trade
 ```
 cd Crypto-trade 
 ```
-ติดตั้ง dependency 
-```
-npm i
-```
 
 -----------------------------------------------------
 
@@ -38,9 +34,19 @@ docker-compose up -d
 
 ***ไฟล์ .env นี้มีไว้เพื่อการทดสอบเท่านั้น ไม่ควรนำไปใช้ใน production***
 
+ไปที่โฟลเดอร์ crypto
+```
+cd crypto
+```
+
+ติดตั้ง dependency 
+```
+npm i
+```
+
 ไปที่โฟลเดอร์ server
 ```
-cd crypto/server
+cd server
 ```
 
 รัน seed 
