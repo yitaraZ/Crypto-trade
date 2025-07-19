@@ -1,4 +1,4 @@
-const FiatWalletService = require('../services/FiatWalletService');
+const FiatWalletService = require('../services/fiatWalletService');
 
 exports.getAll = async (req, res) => {
   try {
@@ -45,5 +45,37 @@ exports.delete = async (req, res) => {
     res.json({ success: true, message: 'Fiat Wallet deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+exports.getBalance = async (req, res) => {
+  try {
+    const { userId, fiatId } = req.params;
+    const balance = await FiatWalletService.getBalance(userId, fiatId);
+    res.json({ balance });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.increaseBalance = async (req, res) => {
+  try {
+    const { userId, fiatId } = req.body;
+    const { amount } = req.body;
+    const updated = await FiatWalletService.increaseBalance(userId, fiatId, amount);
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.decreaseBalance = async (req, res) => {
+  try {
+    const { userId, fiatId } = req.body;
+    const { amount } = req.body;
+    const updated = await FiatWalletService.decreaseBalance(userId, fiatId, amount);
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };

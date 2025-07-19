@@ -61,9 +61,8 @@ const Trade = sequelize.define('Trade', {
   }
 }, {
   tableName: 'trades',
-  timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at'
+  timestamps: false,
+  createdAt: 'created_at'
 });
 
 

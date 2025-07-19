@@ -13,3 +13,7 @@ exports.update = async (FiatWallet, data) =>
 
 exports.delete = (fiatWalletId) =>
   FiatWallet.destroy({ where: { fiat_wallet_id: fiatWalletId } });
+
+exports.findByUserAndFiat = async (userId, fiatId) => 
+  FiatWallet.findOne({ where: { user_id: userId, fiat_id: fiatId } });
+
