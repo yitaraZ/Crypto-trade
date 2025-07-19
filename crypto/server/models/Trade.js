@@ -23,11 +23,8 @@ const Trade = sequelize.define('Trade', {
       key: 'user_id'
     }
   },
-  order_id_buyer: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  order_id_seller: {
+
+  order_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -66,8 +63,9 @@ const Trade = sequelize.define('Trade', {
   },
 }, {
   tableName: 'trades',
-  timestamps: false,
+  timestamps: true,
   updatedAt: 'updated_at',
+  createdAt: 'created_at',
 });
 
 
